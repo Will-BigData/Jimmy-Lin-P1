@@ -21,4 +21,6 @@ connection = mysql.connector.connect(
 
 if connection.is_connected():
     print("Connected to MySQL database")
+else:
+    print("Failed to connect")
 
