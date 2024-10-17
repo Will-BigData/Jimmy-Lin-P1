@@ -1,4 +1,3 @@
-from connections.connection import connection
 from mysql.connector import Error
 from connections.ConnectionUtil import ConnectionUtil
 
