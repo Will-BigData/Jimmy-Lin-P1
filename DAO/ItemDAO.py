@@ -15,17 +15,20 @@ class ItemDAO:
             else:
                 print("No item found")
                 return None
-        except Error:
+        except Error as e:
             print("An error has occured while fetching the item")
+            print(e)
             pass
+        finally:
+            cursor.close()
     
     def get_all_items(self):
         try:
             conn = ConnectionUtil.get_connection()
-            cursor = conn.coursor(dictionary=True)
+            cursor = conn.cursor(dictionary=True)
             sql = "SELECT * FROM items;"
             cursor.execute(sql)
-            result = cursor.fetch()
+            result = cursor.fetchall()
             if result:
                 return result
             else:
