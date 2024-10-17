@@ -6,7 +6,7 @@ class ItemDAO:
     def get_item_by_id(self, item_id):
         try:
             conn = ConnectionUtil.get_connection()
-            cursor = conn.coursor(dictionary=True)
+            cursor = conn.cursor(dictionary=True)
             sql = "SELECT * FROM items WHERE id = %s;"
             cursor.execute(sql,(item_id,))
             result = cursor.fetchone()
