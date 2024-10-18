@@ -58,3 +58,39 @@ class OrderDAO:
             pass
         finally:
             cursor.close()
+
+    def create_order(self, order):
+        try:
+            conn = ConnectionUtil.get_connection()
+            cursor = conn.cursor(dictionary=True)
+            sql = "INSERT INTO orders (user_id, item_id, amount) VALUES (%s, %s, %s);"
+            cursor.execute(sql,(order['user_id'], order['item_id'], order['amount']))
+            conn.commit()
+            print("Order created successfully.")
+        except Error:
+            print("An error has occured while fetching the item")
+            pass
+
+    def update_order(self, id, order):
+        try:
+            conn = ConnectionUtil.get_connection()
+            cursor = conn.cursor(dictionary=True)
+            sql = "UPDATE orders SET amount = %s WHERE id = %s;"
+            cursor.execute(sql,(order['amount'], id))
+            conn.commit()
+            print("Order updated successfully.")
+        except Error:
+            print("An error has occured while fetching the item")
+            pass
+
+    def delete_order(self, id):
+        try:
+            conn = ConnectionUtil.get_connection()
+            cursor = conn.cursor(dictionary=True)
+            sql = "DELETE FROM orders WHERE id = %s;"
+            cursor.execute(sql,(id,))
+            conn.commit()
+            print("Order deleted successfully.")
+        except Error:
+            print("An error has occured while fetching the item")
+            pass
