@@ -64,9 +64,10 @@ class UserDAO:
             cursor.execute(sql,(user['username'], user['email'], user['password']))
             conn.commit()
             print("User created successfully.")
+            return {**user, 'id':conn.lastrowid}
         except Error:
             print("An error has occured while fetching the item")
-            pass
+            return None
 
     def update_user(self, id, user):
         try:
