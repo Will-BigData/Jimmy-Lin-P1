@@ -1,11 +1,11 @@
-# from DAO.ItemDAO import ItemDAO
+from flask import Flask
 
-# items = ItemDAO()
+app = Flask(__name__)
 
-# # itemlist = items.get_all_items()
-# single = items.get_item_by_id(1)
+@app.route('/')
+def hello_world():
+    return "hello world"
 
-# # print(itemlist)
-# print(single)
-
+if __name__ == "__main__":
+    app.run(debug=True)
 
