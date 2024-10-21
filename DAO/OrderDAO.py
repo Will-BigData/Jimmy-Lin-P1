@@ -144,10 +144,11 @@ class OrderDAO:
             cursor.execute(sql,(user_id,))
             if c:
                 conn.commit()
+            return True
         except Error as e:
             print("An error has occured while fetching the item")
             print(e)
-            pass
+            return False
         finally:
             if c:
                 cursor.close()

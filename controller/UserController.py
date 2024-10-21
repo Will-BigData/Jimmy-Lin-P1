@@ -44,6 +44,6 @@ class UserController:
         result = self.users.updateFunds(id=id, fund=funds)
         if result:
             return jsonify({"message":"success"}), 200
-        return jsonify({"message":"an error has occured"}), 405
+        return jsonify({"message":"Your Funds Can't be lower than 0"}), 400
 
 

@@ -38,3 +38,11 @@ class OrderController:
         if result:
             return jsonify({"message":"success"}), 200
         return jsonify({"message":"order not found"}), 404
+    
+    def commit_order(self, id):
+        result = self.orders.commit_order(id)
+        if result == -1:
+            return jsonify({"message":"insufficent funds"}), 403
+        if result == -2:
+            return jsonify({"message":"an error has occured"}), 500
+        return jsonify({"total":result}), 200

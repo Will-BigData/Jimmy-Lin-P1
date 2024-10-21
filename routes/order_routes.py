@@ -20,6 +20,6 @@ def delete_order(id):
 def update_order(id):
     return order_controller.update_order(id)
 
-@order_routes.route('/commit/', methods=['PUT'])
-def commit_order():
-    pass
+@order_routes.route('/commit/<int:id>/', methods=['PUT'])
+def commit_order(id):
+    return order_controller.commit_order(id)
