@@ -64,7 +64,7 @@ class UserDAO:
             cursor.execute(sql,(user['username'], user['email'], user['password']))
             conn.commit()
             print("User created successfully.")
-            return {**user, 'id':conn.lastrowid}
+            return {**user, 'id':cursor.lastrowid}
         except Error:
             print("An error has occured while fetching the item")
             return None
@@ -85,13 +85,14 @@ class UserDAO:
         try:
             conn = ConnectionUtil.get_connection()
             cursor = conn.cursor(dictionary=True)
-            sql = "UPDATE users SET funds = %s WHERE id = %s;"
+            sql = "UPDATE users SET funds = funds + %s WHERE id = %s;"
             cursor.execute(sql,(fund, id))
             conn.commit()
             print("User updated successfully.")
+            return True
         except Error:
             print("An error has occured while fetching the item")
-            pass
+            return False
 
     def delete_user_by_id(self, id):
         try:

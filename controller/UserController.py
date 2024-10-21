@@ -28,6 +28,22 @@ class UserController:
             return jsonify(user), 200
         except KeyError as e:
             return jsonify({"message":"Please enter all fields"}), 400
+        
+    def get_user(self, id):
+        user = self.get_user(id=id)
+        if not user:
+            return jsonify({"error":"user not found"}), 404
+        return jsonify(user), 200
     
+    def updatefunds(self, id):
+        funds = request.json.get('funds', 0)
+        try:
+            funds = int(funds)
+        except:
+            return jsonify({"message":"Please enter a number"}), 400
+        result = self.users.updateFunds(id=id, fund=funds)
+        if result:
+            return jsonify({"message":"success"}), 200
+        return jsonify({"message":"an error has occured"}), 405
 
 
