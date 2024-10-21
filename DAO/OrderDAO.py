@@ -2,11 +2,14 @@ from mysql.connector import Error
 from connections.ConnectionUtil import ConnectionUtil
 
 class OrderDAO:
-    def get_order_by_id(self, id):
+    def get_order_by_id(self, id, name=False):
         try:
             conn = ConnectionUtil.get_connection()
             cursor = conn.cursor(dictionary=True)
-            sql = "SELECT * FROM orders WHERE id = %s;"
+            if name:
+                sql = "SELECT * FROM orders WHERE id = %s JOIN items ON orders.item_id = items.id;;"
+            else:
+                sql = "SELECT * FROM orders WHERE id = %s;"
             cursor.execute(sql,(id,))
             result = cursor.fetchone()
             if result:
@@ -21,11 +24,14 @@ class OrderDAO:
         finally:
             cursor.close()
 
-    def get_order_by_user(self, user_id):
+    def get_order_by_user(self, user_id, name=False):
         try:
             conn = ConnectionUtil.get_connection()
             cursor = conn.cursor(dictionary=True)
-            sql = "SELECT * FROM orders WHERE user_id = %s;"
+            if name:
+                sql = "SELECT * FROM orders WHERE user_id = %s JOIN items ON orders.item_id = items.id;;"
+            else:
+                sql = "SELECT * FROM orders WHERE user_id = %s;"
             cursor.execute(sql,(user_id,))
             result = cursor.fetchone()
             if result:
@@ -40,11 +46,14 @@ class OrderDAO:
         finally:
             cursor.close()
     
-    def get_order_by_item(self, item_id):
+    def get_order_by_item(self, item_id, name=False):
         try:
             conn = ConnectionUtil.get_connection()
             cursor = conn.cursor(dictionary=True)
-            sql = "SELECT * FROM orders WHERE item_id = %s;"
+            if name:
+                sql = "SELECT * FROM orders WHERE item_id = %s JOIN items ON orders.item_id = items.id;"
+            else:
+                sql = "SELECT * FROM orders WHERE item_id = %s;"
             cursor.execute(sql,(item_id,))
             result = cursor.fetchone()
             if result:
