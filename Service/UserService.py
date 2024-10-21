@@ -10,8 +10,8 @@ class UserService:
     def login(self, email, password):
         account = self.userdao.get_user_by_email(email=email)
         if not account:
-            return None
+            return None, 404
         if account['password'] == password:
-            return account
-        return None
+            return account, 200
+        return None, 401
 
