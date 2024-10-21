@@ -113,21 +113,41 @@ class OrderDAO:
         finally:
             cursor.close()
 
-    def get_order_total(self, user_id):
+    def get_order_total(self, user_id, cursor=None):
+        c = not cursor
         try:
-            conn = ConnectionUtil.get_connection()
-            cursor = conn.cursor(dictionary=True)
+            if c:
+                conn = ConnectionUtil.get_connection()
+                cursor = conn.cursor(dictionary=True)
             sql = "select sum(price*amount) as total from orders join items on items.id = orders.item_id WHERE commited = false AND user_id = %s;"
             cursor.execute(sql,(user_id,))
             result = cursor.fetchone()
             if result:
-                return result
+                return result.get('total', 0)
             else:
-                print("No user found")
-                return []
+                return 0
         except Error as e:
             print("An error has occured while fetching the item")
             print(e)
             pass
         finally:
-            cursor.close()
+            if c:
+                cursor.close()
+
+    def commit_order(self, user_id, cursor=None):
+        c = not cursor
+        try:
+            if c:
+                conn = ConnectionUtil.get_connection()
+                cursor = conn.cursor(dictionary=True)
+            sql = "UPDATE orders SET commited = true WHERE commited = false AND user_id = %s;"
+            cursor.execute(sql,(user_id,))
+            if c:
+                conn.commit()
+        except Error as e:
+            print("An error has occured while fetching the item")
+            print(e)
+            pass
+        finally:
+            if c:
+                cursor.close()

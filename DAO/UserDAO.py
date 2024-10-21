@@ -81,18 +81,24 @@ class UserDAO:
             print("An error has occured while fetching the item")
             pass
     
-    def update_funds(self, id, fund):
+    def update_funds(self, id, fund, cursor=None):
+        c = not cursor
         try:
-            conn = ConnectionUtil.get_connection()
-            cursor = conn.cursor(dictionary=True)
+            if c:
+                conn = ConnectionUtil.get_connection()
+                cursor = conn.cursor(dictionary=True)
             sql = "UPDATE users SET funds = funds + %s WHERE id = %s;"
             cursor.execute(sql,(fund, id))
-            conn.commit()
+            if c:
+                conn.commit()
             print("User updated successfully.")
             return True
         except Error:
             print("An error has occured while fetching the item")
             return False
+        finally:
+            if c:
+                cursor.close()
 
     def delete_user_by_id(self, id):
         try:
