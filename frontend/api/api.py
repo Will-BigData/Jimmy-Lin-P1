@@ -18,7 +18,7 @@ def request_handler(url_extension='', data=None, method='GET'):
 
     except requests.exceptions.RequestException as e:
         print(f"An error occurred: {e}")
-        return None, None
+        return None
 
 def test_connection():
     return request_handler()
