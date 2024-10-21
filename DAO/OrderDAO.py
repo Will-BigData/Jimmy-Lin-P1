@@ -7,7 +7,7 @@ class OrderDAO:
             conn = ConnectionUtil.get_connection()
             cursor = conn.cursor(dictionary=True)
             if name:
-                sql = "SELECT * FROM orders WHERE id = %s JOIN items ON orders.item_id = items.id;;"
+                sql = "SELECT * FROM orders JOIN items ON orders.item_id = items.id WHERE id = %s;"
             else:
                 sql = "SELECT * FROM orders WHERE id = %s;"
             cursor.execute(sql,(id,))
@@ -15,7 +15,7 @@ class OrderDAO:
             if result:
                 return result
             else:
-                print("No user found")
+                print("No order found")
                 return None
         except Error as e:
             print("An error has occured while fetching the item")
@@ -29,7 +29,7 @@ class OrderDAO:
             conn = ConnectionUtil.get_connection()
             cursor = conn.cursor(dictionary=True)
             if name:
-                sql = "SELECT * FROM orders WHERE user_id = %s JOIN items ON orders.item_id = items.id;;"
+                sql = "SELECT * FROM orders JOIN items ON orders.item_id = items.id WHERE user_id = %s;"
             else:
                 sql = "SELECT * FROM orders WHERE user_id = %s;"
             cursor.execute(sql,(user_id,))
@@ -38,7 +38,7 @@ class OrderDAO:
                 return result
             else:
                 print("No user found")
-                return None
+                return []
         except Error as e:
             print("An error has occured while fetching the item")
             print(e)
@@ -51,7 +51,7 @@ class OrderDAO:
             conn = ConnectionUtil.get_connection()
             cursor = conn.cursor(dictionary=True)
             if name:
-                sql = "SELECT * FROM orders WHERE item_id = %s JOIN items ON orders.item_id = items.id;"
+                sql = "SELECT * FROM orders JOIN items ON orders.item_id = items.id WHERE item_id = %s;"
             else:
                 sql = "SELECT * FROM orders WHERE item_id = %s;"
             cursor.execute(sql,(item_id,))
