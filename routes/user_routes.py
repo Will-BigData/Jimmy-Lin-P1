@@ -12,7 +12,7 @@ def signup():
 def login():
     return user_controller.login()
 
-@user_routes.route('/funds/<int:user_id>', methods=['PUT'])
+@user_routes.route('/funds/<int:user_id>/', methods=['PUT'])
 def updatefunds(user_id):
     return user_controller.updatefunds(id=user_id)
 

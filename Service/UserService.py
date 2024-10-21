@@ -15,9 +15,9 @@ class UserService:
             return account, 200
         return None, 401
     
-    def get_user(self, user_id):
-        return self.userdao.get_user_by_id(id=user_id)
+    def get_user(self, id):
+        return self.userdao.get_user_by_id(id=id)
     
     def updateFunds(self, id, fund):
-        return self.userdao.update_funds(self, id, fund)
+        return self.userdao.update_funds(id, fund)
 

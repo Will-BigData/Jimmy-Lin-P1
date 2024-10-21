@@ -30,7 +30,7 @@ class UserController:
             return jsonify({"message":"Please enter all fields"}), 400
         
     def get_user(self, id):
-        user = self.get_user(id=id)
+        user = self.users.get_user(id=id)
         if not user:
             return jsonify({"error":"user not found"}), 404
         return jsonify(user), 200
