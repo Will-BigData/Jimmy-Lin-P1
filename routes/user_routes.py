@@ -9,5 +9,5 @@ def signup():
     return user_controller.signup()
 
 @user_routes.route('/login', methods=['PUT'])
-def signup():
+def login():
     return user_controller.login()
