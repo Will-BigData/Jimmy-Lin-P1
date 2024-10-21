@@ -7,7 +7,7 @@ class OrderDAO:
             conn = ConnectionUtil.get_connection()
             cursor = conn.cursor(dictionary=True)
             if name:
-                sql = "SELECT * FROM orders JOIN items ON orders.item_id = items.id WHERE id = %s;"
+                sql = "SELECT *, orders.id as id FROM orders JOIN items ON orders.item_id = items.id WHERE id = %s;"
             else:
                 sql = "SELECT * FROM orders WHERE id = %s;"
             cursor.execute(sql,(id,))
@@ -29,11 +29,11 @@ class OrderDAO:
             conn = ConnectionUtil.get_connection()
             cursor = conn.cursor(dictionary=True)
             if name:
-                sql = "SELECT * FROM orders JOIN items ON orders.item_id = items.id WHERE user_id = %s;"
+                sql = "SELECT *, orders.id as id FROM orders JOIN items ON orders.item_id = items.id WHERE user_id = %s;"
             else:
                 sql = "SELECT * FROM orders WHERE user_id = %s;"
             cursor.execute(sql,(user_id,))
-            result = cursor.fetchone()
+            result = cursor.fetchall()
             if result:
                 return result
             else:
@@ -51,11 +51,11 @@ class OrderDAO:
             conn = ConnectionUtil.get_connection()
             cursor = conn.cursor(dictionary=True)
             if name:
-                sql = "SELECT * FROM orders JOIN items ON orders.item_id = items.id WHERE item_id = %s;"
+                sql = "SELECT *, orders.id as id FROM orders JOIN items ON orders.item_id = items.id WHERE item_id = %s;"
             else:
                 sql = "SELECT * FROM orders WHERE item_id = %s;"
             cursor.execute(sql,(item_id,))
-            result = cursor.fetchone()
+            result = cursor.fetchall()
             if result:
                 return result
             else:
@@ -80,6 +80,8 @@ class OrderDAO:
         except Error:
             print("An error has occured while fetching the item")
             return False
+        finally:
+            cursor.close()
 
     def update_order(self, id, order):
         try:
@@ -89,9 +91,12 @@ class OrderDAO:
             cursor.execute(sql,(order['amount'], id))
             conn.commit()
             print("Order updated successfully.")
+            return True
         except Error:
             print("An error has occured while fetching the item")
-            pass
+            return False
+        finally:
+            cursor.close()
 
     def delete_order(self, id):
         try:
@@ -101,15 +106,18 @@ class OrderDAO:
             cursor.execute(sql,(id,))
             conn.commit()
             print("Order deleted successfully.")
+            return True
         except Error:
             print("An error has occured while fetching the item")
-            pass
+            return False
+        finally:
+            cursor.close()
 
-    def get_order_price(self, user_id, name=False): #WIP
+    def get_order_total(self, user_id):
         try:
             conn = ConnectionUtil.get_connection()
             cursor = conn.cursor(dictionary=True)
-            sql = "SELECT * FROM orders JOIN items ON orders.item_id = items.id WHERE user_id = %s;"
+            sql = "select sum(price*amount) as total from orders join items on items.id = orders.item_id WHERE commited = false AND user_id = %s;"
             cursor.execute(sql,(user_id,))
             result = cursor.fetchone()
             if result:
