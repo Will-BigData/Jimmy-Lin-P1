@@ -29,7 +29,7 @@ class OrderDAO:
             conn = ConnectionUtil.get_connection()
             cursor = conn.cursor(dictionary=True)
             if name:
-                sql = "SELECT *, orders.id as id FROM orders JOIN items ON orders.item_id = items.id WHERE user_id = %s ORDER BY commited DESC, updated_at DESC;"
+                sql = "SELECT *, orders.id as id FROM orders JOIN items ON orders.item_id = items.id WHERE user_id = %s ORDER BY commited ASC, updated_at DESC;"
             else:
                 sql = "SELECT * FROM orders WHERE user_id = %s;"
             cursor.execute(sql,(user_id,))
