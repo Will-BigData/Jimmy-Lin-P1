@@ -10,6 +10,27 @@ def create_orders_interface(parent, changeScreen, rebuild, rnum):
     # Sample orders
     orders = DataManager.get_orders()
     print(orders)
+
+    # Calculate total cost of committed items
+    total_committed_cost = sum(item["amount"] * item["price"] for item in orders if not item["commited"])
+    total_frame = tk.Frame(parent)
+    total_frame.pack(pady=10)
+
+    # Display total committed cost above the table
+    total_label = tk.Label(total_frame, text="Total:", font=("Helvetica", 14, "bold"))
+    total_label.grid(row=0, column=0, padx=(0, 10))  # Move to the left
+
+    total_cost_display = tk.Label(total_frame, text=f"${total_committed_cost:.2f}", font=("Helvetica", 14))
+    total_cost_display.grid(row=0, column=1)  # Total cost display
+
+    def commit():
+        if total_committed_cost:
+            DataManager.commit_order()
+            create_orders_interface(parent, changeScreen, rebuild, rnum)
+
+    # Add Commit button
+    commit_button = tk.Button(total_frame, text="Commit", command=commit)
+    commit_button.grid(row=0, column=2, padx=(10, 0))  # Position on the right
     
     # Create a canvas
     canvas = tk.Canvas(parent)
@@ -34,7 +55,7 @@ def create_orders_interface(parent, changeScreen, rebuild, rnum):
 
     # Create table headers
     tk.Label(scrollable_frame, text="Item", font=("Helvetica", 12, "bold")).grid(row=0, column=0, padx=10, pady=5)
-    tk.Label(scrollable_frame, text="Total Cost", font=("Helvetica", 12, "bold")).grid(row=0, column=1, padx=10, pady=5)
+    tk.Label(scrollable_frame, text="Price", font=("Helvetica", 12, "bold")).grid(row=0, column=1, padx=10, pady=5)
     tk.Label(scrollable_frame, text="Amount", font=("Helvetica", 12, "bold")).grid(row=0, column=2, padx=10, pady=5)
     tk.Label(scrollable_frame, text="Actions", font=("Helvetica", 12, "bold")).grid(row=0, column=3, columnspan=2, padx=10, pady=5)
 
@@ -72,6 +93,8 @@ def create_orders_interface(parent, changeScreen, rebuild, rnum):
         else:
             # Display amount as a label if committed
             tk.Label(scrollable_frame, text=str(item["amount"])).grid(row=index + 1, column=2, padx=10, pady=5)
+            tk.Label(scrollable_frame, text="Completed", fg="green").grid(row=index + 1, column=3, padx=5, pady=5)
+
 
     def update_item(item_name, new_amount):
         """Handles the updating process for the item's amount."""
