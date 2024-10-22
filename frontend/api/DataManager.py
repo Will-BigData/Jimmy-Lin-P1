@@ -26,7 +26,6 @@ class DataManager:
         if not DataManager.__user:
             return
         id = DataManager.__user['id']
-        print(id)
         response = update_funds(id,funds)
         if response.status_code == 200:
             DataManager.__user['funds']+=funds
