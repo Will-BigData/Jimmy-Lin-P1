@@ -8,9 +8,9 @@ def request_handler(url_extension='', data=None, method='GET'):
     try:
         if method == 'POST':
             response = requests.post(url, json=data)
-        if method == 'PUT':
+        elif method == 'PUT':
             response = requests.put(url, json=data)
-        if method == 'DELETE':
+        elif method == 'DELETE':
             response = requests.delete(url)
         else:
             response = requests.get(url)
@@ -22,3 +22,18 @@ def request_handler(url_extension='', data=None, method='GET'):
 
 def test_connection():
     return request_handler()
+
+def login(email, password):
+    data = {
+        "email":email,
+        "password":password
+    }
+    print(data)
+    return request_handler(url_extension='user/login/', data=data, method='PUT')
+
+def get_items():
+    return request_handler(url_extension='/item')
+
+def update_funds(user_id, funds):
+    print("Called")
+    return request_handler(f'/user/funds/{user_id}/', {"funds":funds},method='PUT')
