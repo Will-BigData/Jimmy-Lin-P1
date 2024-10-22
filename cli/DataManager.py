@@ -53,19 +53,24 @@ class DataManager:
         response = create_order(id, item_id, amount)
         if response.status_code == 200:
             DataManager.get_orders(refetch=True)
+            return True
 
     def update_order(order_id, amount):
         response = update_order(order_id, amount)
         if response.status_code == 200:
             DataManager.get_orders(refetch=True)
+            return True
 
     def delete_order(order_id, amount):
         response = update_order(order_id, amount)
         if response.status_code == 200:
             DataManager.get_orders(refetch=True)
+            return True
 
     def commit_order():
         id = DataManager.__user['id']
         response = commit_order(id)
         if response.status_code == 200:
             DataManager.get_orders(refetch=True)
+            DataManager.__user['funds']-=response.json()['total']
+            return True
