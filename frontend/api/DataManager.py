@@ -72,6 +72,7 @@ class DataManager:
         response = commit_order(id)
         if response.status_code == 200:
             DataManager.get_orders(refetch=True)
+            DataManager.get_inventory(refetch=True)
             DataManager.__user['funds']-=response.json()['total']
             return True
         

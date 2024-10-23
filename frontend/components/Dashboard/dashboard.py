@@ -36,7 +36,7 @@ def create_dashboard_frame(root, changeScreen):
         if 'ORDERS' in tabs:
             create_orders_interface(orders, changeScreen, rebuild, rnum)
         if 'INVENTORY' in tabs:
-            create_inventory_interface(orders, changeScreen, rebuild, rnum)
+            create_inventory_interface(inventory, changeScreen, rebuild, rnum)
     
     rebuild()
     return tab_control

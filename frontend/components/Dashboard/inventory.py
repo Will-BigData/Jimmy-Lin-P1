@@ -37,8 +37,6 @@ def create_inventory_interface(parent, changeScreen, rebuild, rnum):
     tk.Label(scrollable_frame, text="Quantity", font=("Helvetica", 12, "bold")).grid(row=0, column=1, padx=10, pady=5)
     tk.Label(scrollable_frame, text="Update", font=("Helvetica", 12, "bold")).grid(row=0, column=2, padx=10, pady=5)
 
-    quantity_entry = dict()
-
     def update_inventory(item_id, amount):
         amount = int(amount)
         if amount < 0:
@@ -56,14 +54,10 @@ def create_inventory_interface(parent, changeScreen, rebuild, rnum):
         tk.Label(scrollable_frame, text=item["quantity"]).grid(row=index + 1, column=1, padx=10, pady=5)
 
         # Quantity entry for updating
-        quantity_entry[index] = tk.Entry(scrollable_frame, width=5, validate="key")
-        quantity_entry[index].insert(0, "0")
-        quantity_entry[index].grid(row=index + 1, column=2, padx=10, pady=5)
+        quantity_entry = tk.Entry(scrollable_frame, width=5, validate="key")
+        quantity_entry.insert(0, "0")
+        quantity_entry.grid(row=index + 1, column=2, padx=10, pady=5)
 
         # Update button
-        update_button = tk.Button(scrollable_frame, text="Update", command=lambda id=item["id"], i=index: update_inventory(id, quantity_entry[i].get()))
+        update_button = tk.Button(scrollable_frame, text="Update", command=lambda id=item["id"], i=index: update_inventory(id, quantity_entry.get()))
         update_button.grid(row=index + 1, column=3, padx=10, pady=5)
-
-    # Back button to change screens
-    back_button = tk.Button(scrollable_frame, text="Back", command=changeScreen)
-    back_button.grid(row=len(items) + 1, column=0, columnspan=4, pady=10)
