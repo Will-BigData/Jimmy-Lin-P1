@@ -23,9 +23,14 @@ def create_orders_interface(parent, changeScreen, rebuild, rnum):
     total_cost_display.grid(row=0, column=1)  # Total cost display
 
     def commit():
-        if total_committed_cost:
-            DataManager.commit_order()
+        if not total_committed_cost:
+            return
+        result = DataManager.commit_order()
+        if result:
             create_orders_interface(parent, changeScreen, rebuild, rnum)
+        else:
+            messagebox.showerror("Commit Failed", "Insufficient Funds")
+        
 
     # Add Commit button
     commit_button = tk.Button(total_frame, text="Commit", command=commit)
