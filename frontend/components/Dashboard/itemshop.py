@@ -38,7 +38,8 @@ def create_itemshop_interface(parent, changeScreen, rebuild, rnum):
 
     quantity_entry = dict()
     def make_order(item_id, amount):
-        if not amount:
+        amount = int(amount)
+        if amount <= 0:
             return
         DataManager.create_order(int(item_id), int(amount))
         rebuild(['ORDERS'])

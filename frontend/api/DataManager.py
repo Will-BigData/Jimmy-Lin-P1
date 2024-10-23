@@ -60,8 +60,8 @@ class DataManager:
             DataManager.get_orders(refetch=True)
             return True
 
-    def delete_order(order_id, amount):
-        response = update_order(order_id, amount)
+    def delete_order(order_id):
+        response = delete_order(order_id)
         if response.status_code == 200:
             DataManager.get_orders(refetch=True)
             return True

@@ -73,7 +73,6 @@ def create_orders_interface(parent, changeScreen, rebuild, rnum):
 
         # Total cost label
         tk.Label(scrollable_frame, text=f"${total_cost:.2f}").grid(row=index + 1, column=1, padx=10, pady=5)
-
         # Amount entry or label
         if not item["commited"]:
             # Editable amount entry
@@ -84,14 +83,14 @@ def create_orders_interface(parent, changeScreen, rebuild, rnum):
             # Update button
             update_button = tk.Button(
                 scrollable_frame, text="Update",
-                command=lambda item=item, entry=amount_entry: update_item(item["item"], entry.get())
+                command=lambda item=item, entry=amount_entry: update_item(item["id"], entry.get())
             )
             update_button.grid(row=index + 1, column=3, padx=5, pady=5)
 
             # Delete button
             delete_button = tk.Button(
                 scrollable_frame, text="Delete",
-                command=lambda item=item: delete_item(item["item"])
+                command=lambda item=item: delete_item(item["id"])
             )
             delete_button.grid(row=index + 1, column=4, padx=5, pady=5)
         else:
@@ -100,21 +99,13 @@ def create_orders_interface(parent, changeScreen, rebuild, rnum):
             tk.Label(scrollable_frame, text="Completed", fg="green").grid(row=index + 1, column=3, padx=5, pady=5)
 
 
-    def update_item(item_name, new_amount):
-        """Handles the updating process for the item's amount."""
-        try:
-            qty = int(new_amount)
-            if qty >= 0:
-                messagebox.showinfo("Update Successful", f"The amount for {item_name} has been updated to {qty}.")
-                # You might add code here to update the data source or API.
-            else:
-                messagebox.showerror("Invalid Quantity", "Please enter a non-negative number.")
-        except ValueError:
-            messagebox.showerror("Invalid Input", "Please enter a valid number.")
+    def update_item(id, amount):
+        amount = int(amount)
+        if amount <= 0:
+            return
+        DataManager.update_order(id, amount)
+        create_orders_interface(parent, changeScreen, rebuild, rnum)
 
-    def delete_item(item_name):
-        """Handles the deletion process for the item."""
-        response = messagebox.askyesno("Confirm Deletion", f"Are you sure you want to delete {item_name}?")
-        if response:
-            messagebox.showinfo("Deletion Successful", f"{item_name} has been deleted.")
-            # You might add code here to remove the item from the data source or API.
+    def delete_item(id):
+        DataManager.delete_order(id)
+        create_orders_interface(parent, changeScreen, rebuild, rnum)
