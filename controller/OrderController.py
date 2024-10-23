@@ -12,7 +12,7 @@ class OrderController:
             user_id = request.json['user_id']
             item_id = request.json['item_id']
             amount = request.json.get('amount', 1)
-            if amount <= 0:
+            if int(amount) <= 0:
                 return jsonify({"message":"Cannot buy less than 1 of an item"}), 400
             result = self.orders.create_order(user_id, item_id, amount)
             if result:
