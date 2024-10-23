@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+from api.DataManager import DataManager
 
 def create_signup_frame(parent):
     label_signup_username = tk.Label(parent, text="Username:")
@@ -24,12 +25,14 @@ def create_signup_frame(parent):
         username = entry_signup_username.get()
         email = entry_signup_email.get()
         password = entry_signup_password.get()
-
+        if not (username and email and password):
+            return messagebox.showerror("Signup Failed", "All fields are required.")
         # Replace with your actual signup logic
-        if username and email and password:
+        result = DataManager.signup(username, email, password)
+        if result:
             messagebox.showinfo("Signup Successful", "Login through the login screen")
         else:
-            messagebox.showerror("Signup Failed", "All fields are required.")
+            messagebox.showerror("Signup Failed", "Username or email is already taken")
 
     button_signup = tk.Button(parent, text="Signup", command=signup)
     button_signup.pack(pady=20)

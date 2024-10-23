@@ -20,11 +20,15 @@ def create_login_frame(parent, changeScreen):
         password = entry_login_password.get()
         
         # Replace with your actual authentication logic
+        if not (email and password):
+            return messagebox.showerror("Login Failed", "Please Enter All Fields")
         result = DataManager.login(email, password)
-        if result:
+        if result == 200:
             changeScreen("DASHBOARD")
+        elif result == 401:
+            messagebox.showerror("Login Failed", "Incorrect Password")
         else:
-            print("failed")
+            messagebox.showerror("Login Failed", "User Not Found")
         
         # show_main_app()
 
