@@ -17,11 +17,12 @@ class InventoryDAO:
         
     def commit_to_inventory(self, user_id, cursor=None):
         c = not cursor
+        print("in dao")
         try:
             if c:
                 conn = ConnectionUtil.get_connection()
                 cursor = conn.cursor(dictionary=True)
-            sql = ("INSERT INTO Inventory (user_id, item_id, quantity) SELECT o.user_id, o.item_id, SUM(o.amount) AS total_quantity FROM Orders o WHERE o.committed = FALSE AND user_id = %s GROUP BY o.user_id, o.item_id ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity);")
+            sql = ("INSERT INTO Inventory (user_id, item_id, quantity) SELECT o.user_id, o.item_id, SUM(o.amount) AS total_quantity FROM Orders o WHERE o.commited = FALSE AND o.user_id = %s GROUP BY o.user_id, o.item_id ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity);")
             cursor.execute(sql,(user_id,))
             if c:
                 conn.commit()
@@ -29,4 +30,4 @@ class InventoryDAO:
             return True
         except Error as e:
             logging.error(f"Query execution failed: {e}")
-            return None
+            return False
