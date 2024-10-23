@@ -6,7 +6,7 @@ class InventoryDAO:
         try:
             conn = ConnectionUtil.get_connection()
             cursor = conn.cursor(dictionary=True)
-            sql = "SELECT i.id as id, quantity, item FROM inventory i JOIN items ON items.id = i.item_id WHERE user_id = %s ORDER BY id;"
+            sql = "SELECT i.id as id, quantity, item FROM inventory i JOIN items ON items.id = i.item_id WHERE user_id = %s AND quantity > 0 ORDER BY id;"
             cursor.execute(sql,(user_id,))
             result = cursor.fetchall()
             logging.info(f"Executed query: {sql}")
@@ -17,7 +17,6 @@ class InventoryDAO:
         
     def commit_to_inventory(self, user_id, cursor=None):
         c = not cursor
-        print("in dao")
         try:
             if c:
                 conn = ConnectionUtil.get_connection()
@@ -31,3 +30,18 @@ class InventoryDAO:
         except Error as e:
             logging.error(f"Query execution failed: {e}")
             return False
+        
+    def update_inventory(self, id, amount):
+        try:
+            conn = ConnectionUtil.get_connection()
+            cursor = conn.cursor(dictionary=True)
+            sql = "UPDATE users SET quantity = quantity + %s WHERE id = %s;"
+            cursor.execute(sql,(amount, id))
+            conn.commit()
+            logging.info(f"Executed query: {sql}")
+            return True
+        except Error as e:
+            logging.error(f"Query execution failed: {e}")
+            return False
+        finally:
+            cursor.close()
