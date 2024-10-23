@@ -6,7 +6,7 @@ class InventoryDAO:
         try:
             conn = ConnectionUtil.get_connection()
             cursor = conn.cursor(dictionary=True)
-            sql = "SELECT i.id as id, quantity, item FROM inventory i JOIN items ON items.id = i.item_id WHERE user_id = %s ORDER BY quantity;"
+            sql = "SELECT i.id as id, quantity, item FROM inventory i JOIN items ON items.id = i.item_id WHERE user_id = %s ORDER BY id;"
             cursor.execute(sql,(user_id,))
             result = cursor.fetchall()
             logging.info(f"Executed query: {sql}")
