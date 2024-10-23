@@ -35,7 +35,7 @@ class InventoryDAO:
         try:
             conn = ConnectionUtil.get_connection()
             cursor = conn.cursor(dictionary=True)
-            sql = "UPDATE users SET quantity = quantity + %s WHERE id = %s;"
+            sql = "UPDATE inventory SET quantity = quantity + %s WHERE id = %s;"
             cursor.execute(sql,(amount, id))
             conn.commit()
             logging.info(f"Executed query: {sql}")
