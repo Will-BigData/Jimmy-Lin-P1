@@ -72,7 +72,7 @@ def create_orders_interface(parent, changeScreen, rebuild, rnum):
         tk.Label(scrollable_frame, text=item["item"]).grid(row=index + 1, column=0, padx=10, pady=5)
 
         # Total cost label
-        tk.Label(scrollable_frame, text=f"${total_cost:.2f}").grid(row=index + 1, column=1, padx=10, pady=5)
+        tk.Label(scrollable_frame, text=f"{total_cost}G").grid(row=index + 1, column=1, padx=10, pady=5)
         # Amount entry or label
         if not item["commited"]:
             # Editable amount entry

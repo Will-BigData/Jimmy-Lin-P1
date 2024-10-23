@@ -56,7 +56,7 @@ def create_itemshop_interface(parent, changeScreen, rebuild, rnum):
         quantity_entry[index].grid(row=index + 1, column=1, padx=10, pady=5)
 
         # Cost label
-        tk.Label(scrollable_frame, text=f"${item['price']:.2f}").grid(row=index + 1, column=2, padx=10, pady=5)
+        tk.Label(scrollable_frame, text=f"{item['price']}G").grid(row=index + 1, column=2, padx=10, pady=5)
 
         # Order button
         order_button = tk.Button(scrollable_frame, text="Order", command=lambda id=item["id"],i=index: make_order(id, quantity_entry[i].get()))

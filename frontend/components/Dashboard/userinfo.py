@@ -39,7 +39,7 @@ def create_user_info_frame(parent, changeScreen, rebuild, rnum):
     label_funds = tk.Label(user_info_frame, text="Funds: ", font=label_font)
     label_funds.grid(row=2, column=0, sticky=tk.W)
 
-    funds_value = tk.Label(user_info_frame, text=f"${funds:.2f}", font=label_font)
+    funds_value = tk.Label(user_info_frame, text=f"{funds}G", font=label_font)
     funds_value.grid(row=2, column=1, sticky=tk.W)
 
     # Add Funds Section
