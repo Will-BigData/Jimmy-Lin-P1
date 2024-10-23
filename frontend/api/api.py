@@ -64,3 +64,6 @@ def delete_order(id):
 
 def commit_order(user_id):
     return request_handler(f'/order/commit/{user_id}/', method='PUT')
+
+def get_inventory(user_id):
+    return request_handler(f'/inventory/{user_id}/', method='GET')

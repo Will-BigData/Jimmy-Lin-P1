@@ -4,6 +4,7 @@ class DataManager:
     __items = None
     __user = None
     __orders = None
+    __inventory = None
 
     def get_user():
         return DataManager.__user
@@ -73,3 +74,12 @@ class DataManager:
             DataManager.get_orders(refetch=True)
             DataManager.__user['funds']-=response.json()['total']
             return True
+        
+    def get_inventory(refetch=False):
+        if not DataManager.__user:
+            DataManager.__inventory = None
+            return []
+        if not DataManager.__inventory or refetch:
+            id = DataManager.__user['id']
+            DataManager.__inventory = get_inventory(id).json()
+        return DataManager.__inventory

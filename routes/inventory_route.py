@@ -6,5 +6,5 @@ inventory_controller = InventoryController()
 
 @inventory_routes.route('/<int:user_id>/', methods=['GET'])
 def get_all_items(user_id):
-    i = inventory_controller.get_inventory_by_user_id(user_id)
+    i = inventory_controller.getInventoryByUser(user_id)
     return jsonify(i),200
