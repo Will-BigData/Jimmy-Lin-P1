@@ -1,7 +1,7 @@
 from Service.InventoryService import InventoryService
 from flask import request, abort
 
-class ItemController:
+class InventoryController:
     inventory = InventoryService()
 
     def getInventoryByUser(self, user_id):
