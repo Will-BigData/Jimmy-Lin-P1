@@ -16,7 +16,6 @@ class DataManager:
 
     def login(email, password):
         response = login(email, password)
-        print(response)
         if response.status_code == 200:
             DataManager.__user = response.json()
         return response.status_code
