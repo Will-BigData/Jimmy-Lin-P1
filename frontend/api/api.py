@@ -67,3 +67,6 @@ def commit_order(user_id):
 
 def get_inventory(user_id):
     return request_handler(f'/inventory/{user_id}/', method='GET')
+
+def update_inventory(id, amount):
+    return request_handler(f'/inventory/{id}/', data={"amount":amount},method='PUT')

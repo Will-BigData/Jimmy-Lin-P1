@@ -9,7 +9,6 @@ def create_inventory_interface(parent, changeScreen, rebuild, rnum):
 
     # Sample Inventory Items
     items = DataManager.get_inventory()  # Assuming this method retrieves inventory items
-    print(items)
 
     # Create a canvas
     canvas = tk.Canvas(parent)
@@ -39,11 +38,12 @@ def create_inventory_interface(parent, changeScreen, rebuild, rnum):
 
     def update_inventory(item_id, amount):
         amount = int(amount)
-        if amount < 0:
+        if amount <= 0:
             messagebox.showerror("Invalid Quantity", "Quantity cannot be negative.")
             return
-        # DataManager.update_inventory_item(item_id, amount)  # Assuming this method updates inventory
-        rebuild(['INVENTORY'])
+        print(amount)
+        DataManager.update_inventory(item_id, -amount)  # Assuming this method updates inventory
+        create_inventory_interface(parent, changeScreen, rebuild, rnum)
 
     # Create rows for each inventory item
     for index, item in enumerate(items):
@@ -55,9 +55,9 @@ def create_inventory_interface(parent, changeScreen, rebuild, rnum):
 
         # Quantity entry for updating
         quantity_entry = tk.Entry(scrollable_frame, width=5, validate="key")
-        quantity_entry.insert(0, "0")
+        quantity_entry.insert(0, "1")
         quantity_entry.grid(row=index + 1, column=2, padx=10, pady=5)
 
         # Update button
-        update_button = tk.Button(scrollable_frame, text="Update", command=lambda id=item["id"], i=index: update_inventory(id, quantity_entry.get()))
+        update_button = tk.Button(scrollable_frame, text="Use", command=lambda id=item["id"], i=quantity_entry: update_inventory(id, i.get()))
         update_button.grid(row=index + 1, column=3, padx=10, pady=5)
