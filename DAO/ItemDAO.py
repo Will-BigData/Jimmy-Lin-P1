@@ -16,7 +16,6 @@ class ItemDAO:
                 return None
         except Error as e:
             logging.error(f"Query execution failed: {e}")
-            pass
         finally:
             cursor.close()
     

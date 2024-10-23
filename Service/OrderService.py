@@ -1,10 +1,12 @@
 from DAO.OrderDAO import OrderDAO
 from DAO.UserDAO import UserDAO
+from DAO.InventoryDAO import InventoryDAO
 from connections.ConnectionUtil import ConnectionUtil
 
 class OrderService:
     orderdao = OrderDAO()
     userdao = UserDAO()
+    inventorydao = InventoryDAO()
 
     def get_order_by_user(self, user_id):
         return self.orderdao.get_order_by_user(user_id=user_id, name=True)
@@ -30,7 +32,8 @@ class OrderService:
                 return 0
             if total > 0:
                 status = self.userdao.update_funds(fund=-total, cursor=cursor, id=id)
-            if not status:
+                status2 = self.inventorydao.commit_to_inventory(id, cursor=cursor)
+            if not status or not status2:
                 return -1
             success = self.orderdao.commit_order(id)
             if not success:
