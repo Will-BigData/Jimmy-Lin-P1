@@ -18,7 +18,7 @@ def create_dashboard_frame(root, changeScreen):
         # Return True only if the input is numeric
         return input_value.isdigit()
 
-    rnum = (root.register(validate_number), '%p')
+    rnum = (root.register(validate_number), '0')
 
     tab_control.add(item_shop, text="Item Shop")
     tab_control.add(orders, text="Orders")

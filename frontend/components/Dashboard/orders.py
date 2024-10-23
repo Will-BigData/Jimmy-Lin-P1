@@ -9,7 +9,6 @@ def create_orders_interface(parent, changeScreen, rebuild, rnum):
     
     # Sample orders
     orders = DataManager.get_orders()
-    print(orders)
 
     # Calculate total cost of committed items
     total_committed_cost = sum(item["amount"] * item["price"] for item in orders if not item["commited"])
