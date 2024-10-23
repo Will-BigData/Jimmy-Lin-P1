@@ -22,9 +22,9 @@ class UserController:
             password = request.json['password']
             user, status = self.users.login(email=email, password=password)
             if status == 404:
-                jsonify({"message": "User Not Found"}), status
+                return jsonify({"message": "User Not Found"}), status
             if status == 401:
-                jsonify({"message": "Incorrect Password"}), status
+                return jsonify({"message": "Incorrect Password"}), status
             return jsonify(user), 200
         except KeyError as e:
             return jsonify({"message":"Please enter all fields"}), 400
