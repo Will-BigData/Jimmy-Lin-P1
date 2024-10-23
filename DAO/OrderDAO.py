@@ -1,5 +1,5 @@
 from mysql.connector import Error
-from connections.ConnectionUtil import ConnectionUtil
+from connections.ConnectionUtil import ConnectionUtil, logging
 
 class OrderDAO:
     def get_order_by_id(self, id, name=False):
@@ -12,15 +12,13 @@ class OrderDAO:
                 sql = "SELECT * FROM orders WHERE id = %s;"
             cursor.execute(sql,(id,))
             result = cursor.fetchone()
+            logging.info(f"Executed query: {sql}")
             if result:
                 return result
             else:
-                print("No order found")
                 return None
         except Error as e:
-            print("An error has occured while fetching the item")
-            print(e)
-            pass
+            logging.error(f"Query execution failed: {e}")
         finally:
             cursor.close()
 
@@ -34,15 +32,13 @@ class OrderDAO:
                 sql = "SELECT * FROM orders WHERE user_id = %s;"
             cursor.execute(sql,(user_id,))
             result = cursor.fetchall()
+            logging.info(f"Executed query: {sql}")
             if result:
                 return result
             else:
-                print("No user found")
                 return []
         except Error as e:
-            print("An error has occured while fetching the item")
-            print(e)
-            pass
+            logging.error(f"Query execution failed: {e}")
         finally:
             cursor.close()
     
@@ -75,10 +71,10 @@ class OrderDAO:
             sql = "INSERT INTO orders (user_id, item_id, amount) VALUES (%s, %s, %s);"
             cursor.execute(sql,(order['user_id'], order['item_id'], order['amount']))
             conn.commit()
-            print("Order created successfully.")
+            logging.info(f"Executed query: {sql}")
             return True
-        except Error:
-            print("An error has occured while fetching the item")
+        except Error as e:
+            logging.error(f"Query execution failed: {e}")
             return False
         finally:
             cursor.close()
@@ -90,10 +86,10 @@ class OrderDAO:
             sql = "UPDATE orders SET amount = %s WHERE id = %s AND commited = FALSE;"
             cursor.execute(sql,(order['amount'], id))
             conn.commit()
-            print("Order updated successfully.")
+            logging.info(f"Executed query: {sql}")
             return True
-        except Error:
-            print("An error has occured while fetching the item")
+        except Error as e:
+            logging.error(f"Query execution failed: {e}")
             return False
         finally:
             cursor.close()
@@ -105,10 +101,10 @@ class OrderDAO:
             sql = "DELETE FROM orders WHERE id = %s AND commited = FALSE;"
             cursor.execute(sql,(id,))
             conn.commit()
-            print("Order deleted successfully.")
+            logging.info(f"Executed query: {sql}")
             return True
-        except Error:
-            print("An error has occured while fetching the item")
+        except Error as e:
+            logging.error(f"Query execution failed: {e}")
             return False
         finally:
             cursor.close()
@@ -122,14 +118,13 @@ class OrderDAO:
             sql = "select sum(price*amount) as total from orders join items on items.id = orders.item_id WHERE commited = false AND user_id = %s;"
             cursor.execute(sql,(user_id,))
             result = cursor.fetchone()
+            logging.info(f"Executed query: {sql}")
             if result:
                 return result.get('total', 0)
             else:
                 return 0
         except Error as e:
-            print("An error has occured while fetching the item")
-            print(e)
-            pass
+            logging.error(f"Query execution failed: {e}")
         finally:
             if c:
                 cursor.close()
@@ -142,13 +137,12 @@ class OrderDAO:
                 cursor = conn.cursor(dictionary=True)
             sql = "UPDATE orders SET commited = true WHERE commited = false AND user_id = %s;"
             cursor.execute(sql,(user_id,))
+            logging.info(f"Executed query: {sql}")
             if c:
                 conn.commit()
             return True
         except Error as e:
-            print("An error has occured while fetching the item")
-            print(e)
-            return False
+            logging.error(f"Query execution failed: {e}")
         finally:
             if c:
                 cursor.close()

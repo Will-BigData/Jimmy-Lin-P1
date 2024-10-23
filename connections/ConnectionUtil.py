@@ -2,8 +2,16 @@ import mysql.connector
 from mysql.connector import Error
 from dotenv import load_dotenv
 import os
+import logging
 
 load_dotenv()
+
+logging.basicConfig(
+    level=logging.INFO,  # Set the logging level
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    filename='app.log',  # Log to a file
+    filemode='a'  # Append to the file
+)
 
 class ConnectionUtil:
     _connection = None
@@ -24,7 +32,7 @@ class ConnectionUtil:
                     database=ConnectionUtil._database,
                     port=ConnectionUtil._port
                 )
-                print(f"Connection to MYSQL ${ConnectionUtil._database} Successful")
+                logging.info("Connected to the database successfully.")
             except Error as e:
-                print(f"Error while connecting to MySQL: {e}")
+                logging.error(f"Failed to connect to the database: {e}")
         return ConnectionUtil._connection

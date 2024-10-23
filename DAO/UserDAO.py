@@ -1,5 +1,5 @@
 from mysql.connector import Error
-from connections.ConnectionUtil import ConnectionUtil
+from connections.ConnectionUtil import ConnectionUtil, logging
 
 class UserDAO:
     def get_user_by_id(self, id):
@@ -9,15 +9,13 @@ class UserDAO:
             sql = "SELECT * FROM users WHERE id = %s;"
             cursor.execute(sql,(id,))
             result = cursor.fetchone()
+            logging.info(f"Executed query: {sql}")
             if result:
                 return result
             else:
-                print("No user found")
                 return None
         except Error as e:
-            print("An error has occured while fetching the item")
-            print(e)
-            pass
+            logging.error(f"Query execution failed: {e}")
         finally:
             cursor.close()
     
@@ -28,15 +26,13 @@ class UserDAO:
             sql = "SELECT * FROM users WHERE email = %s;"
             cursor.execute(sql,(email,))
             result = cursor.fetchone()
+            logging.info(f"Executed query: {sql}")
             if result:
                 return result
             else:
-                print("No user found")
                 return None
         except Error as e:
-            print("An error has occured while fetching the item")
-            print(e)
-            pass
+            logging.error(f"Query execution failed: {e}")
         finally:
             cursor.close()
     
@@ -47,14 +43,13 @@ class UserDAO:
             sql = "SELECT * FROM users;"
             cursor.execute(sql)
             result = cursor.fetchall()
+            logging.info(f"Executed query: {sql}")
             if result:
                 return result
             else:
-                print("No user found")
                 return None
-        except Error:
-            print("An error has occured while fetching the item")
-            pass
+        except Error as e:
+            logging.error(f"Query execution failed: {e}")
 
     def create_user(self, user):
         try:
@@ -63,10 +58,10 @@ class UserDAO:
             sql = "INSERT INTO users (username, email, password) VALUES (%s, %s, %s);"
             cursor.execute(sql,(user['username'], user['email'], user['password']))
             conn.commit()
-            print("User created successfully.")
+            logging.info(f"Executed query: {sql}")
             return {**user, 'id':cursor.lastrowid}
-        except Error:
-            print("An error has occured while fetching the item")
+        except Error as e:
+            logging.error(f"Query execution failed: {e}")
             return None
 
     def update_user(self, id, user):
@@ -76,10 +71,9 @@ class UserDAO:
             sql = "UPDATE users SET username = %s, email = %s, password = %s WHERE id = %s;"
             cursor.execute(sql,(user['username'], user['email'], user['password'], id))
             conn.commit()
-            print("User updated successfully.")
-        except Error:
-            print("An error has occured while fetching the item")
-            pass
+            logging.info(f"Executed query: {sql}")
+        except Error as e:
+            logging.error(f"Query execution failed: {e}")
     
     def update_funds(self, id, fund, cursor=None):
         c = not cursor
@@ -91,10 +85,10 @@ class UserDAO:
             cursor.execute(sql,(fund, id))
             if c:
                 conn.commit()
-            print("User updated successfully.")
+            logging.info(f"Executed query: {sql}")
             return True
-        except Error:
-            print("An error has occured while fetching the item")
+        except Error as e:
+            logging.error(f"Query execution failed: {e}")
             return False
         finally:
             if c:
@@ -107,7 +101,6 @@ class UserDAO:
             sql = "DELETE FROM users WHERE id = %s;"
             cursor.execute(sql,(id,))
             conn.commit()
-            print("User deleted successfully.")
-        except Error:
-            print("An error has occured while fetching the item")
-            pass
+            logging.info(f"Executed query: {sql}")
+        except Error as e:
+            logging.error(f"Query execution failed: {e}")
