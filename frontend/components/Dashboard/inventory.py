@@ -41,7 +41,6 @@ def create_inventory_interface(parent, changeScreen, rebuild, rnum):
         if amount <= 0:
             messagebox.showerror("Invalid Quantity", "Quantity cannot be negative.")
             return
-        print(amount)
         DataManager.update_inventory(item_id, -amount)  # Assuming this method updates inventory
         create_inventory_interface(parent, changeScreen, rebuild, rnum)
 

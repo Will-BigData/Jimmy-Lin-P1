@@ -87,7 +87,6 @@ class DataManager:
     
     def update_inventory(inv_id, amount):
         response = update_inventory(inv_id, amount)
-        print(response.status_code)
         if response.status_code == 200:
             DataManager.get_inventory(refetch=True)
             return True
