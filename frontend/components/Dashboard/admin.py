@@ -2,47 +2,79 @@ import tkinter as tk
 from tkinter import messagebox
 from api.DataManager import DataManager
 
-def create_item_entry_frame(parent, changeScreen, rnum):
+def create_item_entry_frame(parent, changeScreen, rebuild, rnum):
     # Clear everything
     for widget in parent.winfo_children():
         widget.destroy()
+    
+    # Sample Items
+    items = DataManager.get_items()
 
-    # Create a new frame
-    item_entry_frame = tk.Frame(parent)
-    item_entry_frame.pack(pady=10, padx=10)
+    # Create a canvas
+    canvas = tk.Canvas(parent)
+    scroll_y = tk.Scrollbar(parent, orient="vertical", command=canvas.yview)
+    scrollable_frame = tk.Frame(canvas)
 
-    # Font settings
-    label_font = ("Arial", 12)  # Font for labels
-    button_font = ("Arial", 12)  # Font for buttons
+    # Configure the scrollable frame
+    scrollable_frame.bind(
+        "<Configure>",
+        lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+    )
 
-    # Item Name Label
-    label_item_name = tk.Label(item_entry_frame, text="Item Name: ", font=label_font)
-    label_item_name.grid(row=0, column=0, sticky=tk.W)
+    # Create a window in the canvas
+    canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
 
-    item_name_entry = tk.Entry(item_entry_frame, width=20, font=button_font)
-    item_name_entry.grid(row=0, column=1, sticky=tk.W)
+    # Pack the canvas and scrollbar
+    canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+    scroll_y.pack(side=tk.RIGHT, fill=tk.Y)
 
-    # Item Price Label
-    label_price = tk.Label(item_entry_frame, text="Price: ", font=label_font)
-    label_price.grid(row=1, column=0, sticky=tk.W)
+    # Configure canvas and scrollbar
+    canvas.configure(yscrollcommand=scroll_y.set)
 
-    price_entry = tk.Entry(item_entry_frame, width=10, font=button_font, validate="key", validatecommand=rnum)
-    price_entry.grid(row=1, column=1, sticky=tk.W)
+    # Create table headers
+    tk.Label(scrollable_frame, text="Item", font=("Helvetica", 12, "bold")).grid(row=0, column=0, padx=10, pady=5)
+    tk.Label(scrollable_frame, text="Price", font=("Helvetica", 12, "bold")).grid(row=0, column=1, padx=10, pady=5)
+    tk.Label(scrollable_frame, text="Actions", font=("Helvetica", 12, "bold")).grid(row=0, column=2, padx=10, pady=5)
 
-    # Function to handle item submission
-    def submit_item():
-        item_name = item_name_entry.get()
+    # Store entries for each item price for updates
+    price_entry = dict()
+
+    # Function to handle updating an item price
+    def update_price(item_id, item):
+        print("ran")
         try:
-            price = float(price_entry.get())
-            DataManager.add_item(item_name, price)  # Assuming add_item is a method in DataManager
-            messagebox.showinfo("Success", f"Item '{item_name}' with price {price} added successfully!")
-            item_name_entry.delete(0, tk.END)
-            price_entry.delete(0, tk.END)
+            DataManager.update_item(item_id, item)
+            rebuild(['ITEMSHOP','ADMIN_ITEMS'])  # Refresh the page after deletion
         except ValueError:
-            messagebox.showerror("Error", "Price must be a number")
+            messagebox.showerror("Error", "Price must be a valid number.")
 
-    # Submit Button
-    submit_button = tk.Button(item_entry_frame, text="Submit", command=submit_item, font=button_font)
-    submit_button.grid(row=2, column=0, columnspan=2, pady=(10, 5))  # Center the button and add padding
 
-    return item_entry_frame
+    # Function to handle deleting an item
+    def delete_item(item_id):
+        if messagebox.askyesno("Confirm Delete", "Are you sure you want to delete this item?"):
+            DataManager.delete_item(item_id)
+            rebuild(['ITEMSHOP','ADMIN_ITEMS'])  # Refresh the page after deletion
+
+    # Create rows for each item
+    for index, item in enumerate(items):
+        # Item label
+        tk.Label(scrollable_frame, text=item["item"]).grid(row=index + 1, column=0, padx=10, pady=5)
+
+        # Price entry
+        price_entry[index] = tk.Entry(scrollable_frame, width=10, validate="key", validatecommand=rnum)
+        price_entry[index].insert(0, f"{item['price']}")
+        price_entry[index].grid(row=index + 1, column=1, padx=10, pady=5)
+
+        # Actions: Update and Delete buttons
+        action_frame = tk.Frame(scrollable_frame)
+        action_frame.grid(row=index + 1, column=2, padx=10, pady=5)
+
+        # Update Button
+        update_button = tk.Button(action_frame, text="Update", command=lambda id=item["id"], itemn=item['item'], cost=price_entry[index].get(): update_price(id, {"item":itemn, "price":cost}))
+        update_button.pack(side=tk.LEFT, padx=5)
+
+        # Delete Button
+        delete_button = tk.Button(action_frame, text="Delete", command=lambda id=item["id"]: delete_item(id))
+        delete_button.pack(side=tk.LEFT, padx=5)
+
+    return scrollable_frame
