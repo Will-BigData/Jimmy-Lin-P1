@@ -68,8 +68,9 @@ class ItemDAO:
 
     def delete_item(self, id):
         try:
+            print(id)
             conn = ConnectionUtil.get_connection()
-            cursor = conn.cursor(dictionary=True)
+            cursor = conn.cursor()
             sql = "DELETE FROM items WHERE id = %s;"
             cursor.execute(sql,(id,))
             conn.commit()
