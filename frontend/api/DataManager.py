@@ -33,6 +33,7 @@ class DataManager:
     
     def add_item(item):
         response = add_item(item)
+        print(response.status_code)
         if response.status_code == 200:
             DataManager.get_items(refetch=True)
             return True

@@ -50,7 +50,7 @@ def create_item_entry_frame(parent, changeScreen, rebuild, rnum):
         if item_name and item_price:
             try:
                 price_value = int(item_price)  # Ensure the price is a float
-                DataManager.add_item({"item": item_name, "price": price_value})  # Adjust as per your DataManager method
+                DataManager.add_item({"item": item_name, "cost": price_value})  # Adjust as per your DataManager method
                 new_item_name.delete(0, tk.END)  # Clear the entry after adding
                 new_item_price.delete(0, tk.END)
                 rebuild(['ITEMSHOP', 'ADMIN', 'ORDER', 'INVENTORY'])  # Refresh the view
