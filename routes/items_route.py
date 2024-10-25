@@ -14,7 +14,7 @@ def get_item_by_id(item_id):
     i = item_controller.getItemByID(item_id)
     return jsonify(i),200
 
-@item_routes.route('', methods=['POST'])
+@item_routes.route('/', methods=['POST'])
 def add_item():
     return item_controller.addItem()
 

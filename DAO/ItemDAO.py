@@ -40,8 +40,8 @@ class ItemDAO:
         try:
             conn = ConnectionUtil.get_connection()
             cursor = conn.cursor(dictionary=True)
-            sql = "INSERT INTO items (item, cost) VALUES (%s, %s);"
-            cursor.execute(sql)
+            sql = "INSERT INTO items (item, price) VALUES (%s, %s);"
+            cursor.execute(sql,(item['item'], item['cost']))
             conn.commit()
             logging.info(f"Executed query: {sql}")
             return True
