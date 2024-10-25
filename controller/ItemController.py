@@ -32,7 +32,7 @@ class ItemController:
             price = request.json['price']
             if int(price) <= 0:
                 return jsonify({"message":"Cannot sell for less than 0"}), 400
-            result = self.items.update_item(id, item)
+            result = self.items.update_item(id, {"item":item, "cost":price})
             if result:
                 return jsonify({"message":"success"}), 200
             return jsonify({"message":"An Error has occured"}), 500
