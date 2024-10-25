@@ -70,3 +70,12 @@ def get_inventory(user_id):
 
 def update_inventory(id, amount):
     return request_handler(f'/inventory/{id}/', data={"amount":amount},method='PUT')
+
+def add_item(item):
+    return request_handler(f'/item/', data=item, method='POST')
+
+def update_item(id, item):
+    return request_handler(f'/item/{id}/', item, method='PUT')
+
+def delete_item(id):
+    return request_handler(f'/item/{id}/', method='DELETE')

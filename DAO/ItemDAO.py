@@ -40,8 +40,39 @@ class ItemDAO:
         try:
             conn = ConnectionUtil.get_connection()
             cursor = conn.cursor(dictionary=True)
-            sql = "INSERT INTO items (item, cost) VALUES (%s, %s);"
-            cursor.execute(sql)
+            sql = "INSERT INTO items (item, price) VALUES (%s, %s);"
+            cursor.execute(sql,(item['item'], item['cost']))
+            conn.commit()
+            logging.info(f"Executed query: {sql}")
+            return True
+        except Error as e:
+            logging.error(f"Query execution failed: {e}")
+            return False
+        finally:
+            cursor.close()
+
+    def update_item(self, id, item):
+        try:
+            conn = ConnectionUtil.get_connection()
+            cursor = conn.cursor(dictionary=True)
+            sql = "UPDATE items SET price = %s, item = %s WHERE id = %s;"
+            cursor.execute(sql,(item['cost'], item['item'], id))
+            conn.commit()
+            logging.info(f"Executed query: {sql}")
+            return True
+        except Error as e:
+            logging.error(f"Query execution failed: {e}")
+            return False
+        finally:
+            cursor.close()
+
+    def delete_item(self, id):
+        try:
+            print(id)
+            conn = ConnectionUtil.get_connection()
+            cursor = conn.cursor()
+            sql = "DELETE FROM items WHERE id = %s;"
+            cursor.execute(sql,(id,))
             conn.commit()
             logging.info(f"Executed query: {sql}")
             return True

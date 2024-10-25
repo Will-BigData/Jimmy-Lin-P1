@@ -22,15 +22,40 @@ class DataManager:
         return response.status_code
     
     def logout():
-        DataManager.__users = None
+        DataManager.__user = None
         DataManager.__orders = None
         DataManager.__inventory = None
 
-    def get_items():
-        if not DataManager.__items:
+    def get_items(refetch=False):
+        if not DataManager.__items or refetch:
             DataManager.__items = get_items().json()
         return DataManager.__items
     
+    def add_item(item):
+        response = add_item(item)
+        print(response.status_code)
+        if response.status_code == 200:
+            DataManager.get_items(refetch=True)
+            return True
+    
+    def update_item(id, item):
+        response = update_item(id, item)
+        if response.status_code == 200:
+            DataManager.get_items(refetch=True)
+            DataManager.get_orders(refetch=True)
+            DataManager.get_inventory(refetch=True)
+            return True
+        
+    def delete_item(id):
+        response = delete_item(id)
+        print(id)
+        print(response.status_code)
+        if response.status_code == 200:
+            DataManager.get_items(refetch=True)
+            DataManager.get_orders(refetch=True)
+            DataManager.get_inventory(refetch=True)
+            return True
+
     def update_funds(funds):
         if not DataManager.__user:
             return
