@@ -25,3 +25,22 @@ class ItemController:
             return jsonify({"message":"success"}), 200
         except KeyError as e:
             return jsonify({"message":"Please enter all fields"}), 400
+        
+    def update_item(self, id):
+        try:
+            item = request.json['item']
+            price = request.json['price']
+            if price <= 1:
+                return jsonify({"message":"Cannot sell for less than 0"}), 400
+            result = self.items.update_item(id, item)
+            if result:
+                return jsonify({"message":"success"}), 200
+            return jsonify({"message":"An Error has occured"}), 500
+        except KeyError as e:
+            return jsonify({"message":"Missing Values"}), 400
+        
+    def delete_item(self, id):
+        result = self.items.delete_item(id)
+        if result:
+            return jsonify({"message":"success"}), 200
+        return jsonify({"message":"order not found"}), 404
