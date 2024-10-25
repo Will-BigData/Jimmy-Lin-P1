@@ -32,11 +32,11 @@ class OrderService:
                 return 0
             if total > 0:
                 status = self.userdao.update_funds(fund=-total, cursor=cursor, id=id)
-                status2 = self.inventorydao.commit_to_inventory(id, cursor=cursor)
             if not status or not status2:
                 return -1
+            status2 = self.inventorydao.commit_to_inventory(id, cursor=cursor)
             success = self.orderdao.commit_order(id)
-            if not success:
+            if not success and status2:
                 return -2
             conn.commit()
             return int(total)
