@@ -11,7 +11,6 @@ from api.DataManager import DataManager
 def create_dashboard_frame(root, changeScreen):
     user = DataManager.get_user()
     admin = user.get('admin', False)
-    admin = True
     tab_control = ttk.Notebook(root)
     item_shop = ttk.Frame(tab_control)
     orders = ttk.Frame(tab_control)
