@@ -41,12 +41,18 @@ class DataManager:
         response = update_item(id, item)
         if response.status_code == 200:
             DataManager.get_items(refetch=True)
+            DataManager.get_orders(refetch=True)
+            DataManager.get_inventory(refetch=True)
             return True
         
     def delete_item(id):
         response = delete_item(id)
+        print(id)
+        print(response.status_code)
         if response.status_code == 200:
             DataManager.get_items(refetch=True)
+            DataManager.get_orders(refetch=True)
+            DataManager.get_inventory(refetch=True)
             return True
 
     def update_funds(funds):

@@ -44,16 +44,17 @@ def create_item_entry_frame(parent, changeScreen, rebuild, rnum):
         print("ran")
         try:
             DataManager.update_item(item_id, item)
-            rebuild(['ITEMSHOP','ADMIN_ITEMS'])  # Refresh the page after deletion
+            rebuild(['ITEMSHOP','ADMIN', 'ORDER', 'INVENTORY'])  # Refresh the page after deletion
         except ValueError:
             messagebox.showerror("Error", "Price must be a valid number.")
 
 
     # Function to handle deleting an item
     def delete_item(item_id):
+        print(item_id)
         if messagebox.askyesno("Confirm Delete", "Are you sure you want to delete this item?"):
             DataManager.delete_item(item_id)
-            rebuild(['ITEMSHOP','ADMIN_ITEMS'])  # Refresh the page after deletion
+            rebuild(['ITEMSHOP','ADMIN', 'ORDER', 'INVENTORY'])  # Refresh the page after deletion
 
     # Create rows for each item
     for index, item in enumerate(items):
