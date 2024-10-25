@@ -70,7 +70,7 @@ def create_item_entry_frame(parent, changeScreen, rebuild, rnum):
         action_frame.grid(row=index + 1, column=2, padx=10, pady=5)
 
         # Update Button
-        update_button = tk.Button(action_frame, text="Update", command=lambda id=item["id"], itemn=item['item'], cost=price_entry[index].get(): update_price(id, {"item":itemn, "price":cost}))
+        update_button = tk.Button(action_frame, text="Update", command=lambda id=item["id"], itemn=item['item'], cost=price_entry[index]: update_price(id, {"item":itemn, "price":cost.get()}))
         update_button.pack(side=tk.LEFT, padx=5)
 
         # Delete Button

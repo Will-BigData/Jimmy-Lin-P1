@@ -55,7 +55,7 @@ class ItemDAO:
         try:
             conn = ConnectionUtil.get_connection()
             cursor = conn.cursor(dictionary=True)
-            sql = "UPDATE items SET cost = %s, item = %s WHERE id = %s;"
+            sql = "UPDATE items SET price = %s, item = %s WHERE id = %s;"
             cursor.execute(sql,(item['cost'], item['item'], id))
             conn.commit()
             logging.info(f"Executed query: {sql}")
