@@ -28,7 +28,7 @@ def create_orders_interface(parent, changeScreen, rebuild, rnum):
         result = DataManager.commit_order()
         if result:
             create_orders_interface(parent, changeScreen, rebuild, rnum)
-            rebuild(('INVENTORY',))
+            rebuild(('INVENTORY','USER'))
         else:
             messagebox.showerror("Commit Failed", "Insufficient Funds")
         
