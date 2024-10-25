@@ -17,8 +17,6 @@ def create_user_info_frame(parent, changeScreen, rebuild, rnum):
     email = user.get('email', 'N/A')        # Default to 'N/A' if not found
     funds = user.get('funds', 0)            # Default to 0 if not found
 
-    print(funds)
-
     # Font settings
     label_font = ("Arial", 12)  # Font for labels
     button_font = ("Arial", 12)  # Font for buttons
