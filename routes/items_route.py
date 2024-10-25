@@ -18,10 +18,10 @@ def get_item_by_id(item_id):
 def add_item():
     return item_controller.addItem()
 
-@item_routes.route('/<int:item_id>/', methods=['PUT'])
+@item_routes.route('/<int:id>/', methods=['PUT'])
 def update_item(id):
     return item_controller.update_item(id)
 
-@item_routes.route('/<int:item_id>/', methods=['DELETE'])
+@item_routes.route('/<int:id>/', methods=['DELETE'])
 def delete_item(id):
     return item_controller.delete_item(id)
