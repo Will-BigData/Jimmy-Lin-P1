@@ -8,5 +8,8 @@ class ItemService:
     
     def get_all_items(self):
         return self.itemDAO.get_all_items()
+    
+    def add_item(self, item):
+        return self.itemDAO.add_items(item)
 
 

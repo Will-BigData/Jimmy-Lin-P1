@@ -35,3 +35,18 @@ class ItemDAO:
         except Error as e:
             logging.error(f"Query execution failed: {e}")
             pass
+    
+    def add_items(self, item):
+        try:
+            conn = ConnectionUtil.get_connection()
+            cursor = conn.cursor(dictionary=True)
+            sql = "INSERT INTO items (item, cost) VALUES (%s, %s);"
+            cursor.execute(sql)
+            conn.commit()
+            logging.info(f"Executed query: {sql}")
+            return True
+        except Error as e:
+            logging.error(f"Query execution failed: {e}")
+            return False
+        finally:
+            cursor.close()
