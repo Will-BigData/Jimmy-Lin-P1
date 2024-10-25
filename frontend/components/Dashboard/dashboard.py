@@ -10,12 +10,14 @@ from api.DataManager import DataManager
 
 def create_dashboard_frame(root, changeScreen):
     user = DataManager.get_user()
+    admin = user.get('admin', False)
     tab_control = ttk.Notebook(root)
     item_shop = ttk.Frame(tab_control)
     orders = ttk.Frame(tab_control)
     user_info = ttk.Frame(tab_control)
     inventory = ttk.Frame(tab_control)
-    admin = ttk.Frame(tab_control)
+    if admin:
+        admin = ttk.Frame(tab_control)
 
         # Validation function to allow only numbers
     def validate_number(input_value):
@@ -30,7 +32,8 @@ def create_dashboard_frame(root, changeScreen):
     tab_control.add(orders, text="Orders")
     tab_control.add(inventory, text="Inventory")
     tab_control.add(user_info, text="User")
-    tab_control.add(admin, text='Admin')
+    if admin:
+        tab_control.add(admin, text='Admin')
     tab_control.pack(expand=1, fill='both')
 
     def rebuild(tabs=['ITEMSHOP', 'USER', 'ORDERS', 'INVENTORY', 'ADMIN']):
@@ -42,7 +45,7 @@ def create_dashboard_frame(root, changeScreen):
             create_orders_interface(orders, changeScreen, rebuild, rnum)
         if 'INVENTORY' in tabs:
             create_inventory_interface(inventory, changeScreen, rebuild, rnum)
-        if 'ADMIN' in tabs:
+        if 'ADMIN' in tabs and admin:
             create_item_entry_frame(admin, changeScreen, rebuild, rnum)
              
     
