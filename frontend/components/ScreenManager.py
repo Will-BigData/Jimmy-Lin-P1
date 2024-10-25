@@ -6,7 +6,7 @@ from .Dashboard.dashboard import create_dashboard_frame
 class ScreenManager:
     def __init__(self):
         self.root = tk.Tk()
-        self.root.title("Login / Signup")
+        self.root.title("PokeMart")
         self.root.geometry("400x300")
         self.screen = 'LOGIN'
         self.frames = {
