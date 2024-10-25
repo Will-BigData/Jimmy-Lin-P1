@@ -24,6 +24,7 @@ class DataManager:
     def logout():
         DataManager.__users = None
         DataManager.__orders = None
+        DataManager.__inventory = None
 
     def get_items():
         if not DataManager.__items:
