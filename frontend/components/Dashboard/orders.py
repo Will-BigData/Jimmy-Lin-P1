@@ -19,7 +19,7 @@ def create_orders_interface(parent, changeScreen, rebuild, rnum):
     total_label = tk.Label(total_frame, text="Total:", font=("Helvetica", 14, "bold"))
     total_label.grid(row=0, column=0, padx=(0, 10))  # Move to the left
 
-    total_cost_display = tk.Label(total_frame, text=f"${total_committed_cost:.2f}", font=("Helvetica", 14))
+    total_cost_display = tk.Label(total_frame, text=f"{total_committed_cost}G", font=("Helvetica", 14))
     total_cost_display.grid(row=0, column=1)  # Total cost display
 
     def commit():
